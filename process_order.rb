@@ -2,7 +2,7 @@ module ProcessOrder
     def self.process_orders(products, orders)
         unfulfilled = []
         orders.each do |order|
-            puts "-----\nprocessing order #{order.id}\n-----"
+            puts "\n-----\nprocessing order #{order.id}\n-----\n "
             order.items.each do |item|
                 products.each do |product|
                     if product.id == item.product_id
@@ -13,7 +13,6 @@ module ProcessOrder
                         else
                             unfulfilled.push order.id
                             order.status = "unfulfilled"
-                            puts "unable to fulfil order #{order.id}"
                         end
                         if product.quantity < product.reorder_thresh && !product.reorder_placed
                             product.reorder
@@ -22,10 +21,11 @@ module ProcessOrder
                     end
                 end
             end
-            if order.status.eql? "unfulfilled"
+            if !order.status.eql? "unfulfilled"
                 order.status = "fulfilled"
             end
+            puts "\norder #{order.id} #{order.status}"
         end
-        puts "-----\nthe following orders were unfulfilled: #{unfulfilled.uniq}"
+        unfulfilled.uniq
     end
 end
