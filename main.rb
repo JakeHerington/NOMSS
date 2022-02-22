@@ -24,6 +24,10 @@ data["orders"].each do |order|
 end
 
 orders_to_process = ARGV[0].delete("[]").split(",").map(&:to_i)
+puts "processing the following orders: #{orders_to_process}"
+puts "removing invalid orders"
 orders.filter! { |order| orders_to_process.include? order.id }
+orders_to_process = orders.map { |order| order.id }.uniq
+puts "remaining orders: #{orders_to_process}"
 
-ProcessOrder.process_orders(orders, products)
+ProcessOrder.process_orders(products, orders)
